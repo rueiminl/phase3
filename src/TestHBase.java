@@ -20,14 +20,14 @@ public class TestHBase {
 		HTable table = new HTable(config, "q3");
 		if (testPut)
 		{
-			Put p = new Put(Bytes.toBytes("12"));
+			Put p = new Put(Bytes.toBytes(args[1]));
 			p.add(Bytes.toBytes("v"), Bytes.toBytes(""), Bytes.toBytes("Some Value"));
 			table.put(p);
 		}
 
 		if (testGet)
 		{
-			Get g = new Get(Bytes.toBytes("12"));
+			Get g = new Get(Bytes.toBytes("308118954"));
 			Result r = table.get(g);
 			byte [] value = r.getValue(Bytes.toBytes("v"),
 				Bytes.toBytes(""));

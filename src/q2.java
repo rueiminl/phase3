@@ -7,6 +7,16 @@ import java.util.*;
 import java.sql.*;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import java.io.IOException;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.client.Get;
+import org.apache.hadoop.hbase.client.HTable;
+import org.apache.hadoop.hbase.client.Put;
+import org.apache.hadoop.hbase.client.Result;
+import org.apache.hadoop.hbase.client.ResultScanner;
+import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.util.Bytes;
 // Extend HttpServlet class
 public class q2 extends HttpServlet {
     private DataSource dataSource;
@@ -47,6 +57,15 @@ public class q2 extends HttpServlet {
         out.println("Wolken,5534-0848-5100,0299-6830-9164");
 	try 
 	{
+		Configuration config = HBaseConfiguration.create();
+		HTable table = new HTable(config, "q3");
+		Get g = new Get(Bytes.toBytes("12"));
+		Result r = table.get(g);
+		byte [] value = r.getValue(Bytes.toBytes("v"),
+			Bytes.toBytes(""));
+		String valueStr = Bytes.toString(value);
+
+
 		Connection conn = dataSource.getConnection();
 		String query = "select concat(tid, \":\", s, \":\", msg) as reply from q2 where uid=" + request.getParameter("userid") + " and ts='" + request.getParameter("tweet_time") + "' order by tid;";
 		Statement st = conn.createStatement();
