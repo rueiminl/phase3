@@ -17,9 +17,18 @@ import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
 // Extend HttpServlet class
 public class q3 extends HttpServlet {
-    private DataSource dataSource;
-    public void init() throws ServletException 
+    Configuration config;
+    HTable table;
+    public void init() throws ServletException
     {
+	try
+	{
+		config = HBaseConfiguration.create();
+		table = new HTable(config, "q3");
+	}
+	catch (Exception e)
+	{
+	}
     }
 
 
@@ -32,8 +41,6 @@ public class q3 extends HttpServlet {
         out.println("Wolken,5534-0848-5100,0299-6830-9164");
 	try 
 	{
-		Configuration config = HBaseConfiguration.create();
-		HTable table = new HTable(config, "q3");
                 Get g = new Get(Bytes.toBytes(request.getParameter("userid")));
                 Result r = table.get(g);
                 byte [] value = r.getValue(Bytes.toBytes("v"),
