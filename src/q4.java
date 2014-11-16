@@ -50,6 +50,8 @@ public class q4 extends HttpServlet {
 		{
 			Integer rk = rank;
 	                byte [] value = r.getValue(Bytes.toBytes("v"), Bytes.toBytes(rk.toString()));
+			if (value == null)
+				break;
 	                String valueStr = Bytes.toString(value);
         	        out.println(valueStr);
 		}
