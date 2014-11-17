@@ -43,17 +43,22 @@ public class q4 extends HttpServlet {
 	try 
 	{
                 Get g = new Get(Bytes.toBytes(request.getParameter("location") + "____" + request.getParameter("date")));
-                Result r = table.get(g);
 		int m = Integer.valueOf(request.getParameter("m"));
 		int n = Integer.valueOf(request.getParameter("n"));
 		for (int rank = m; rank <= n; rank++)
 		{
 			Integer rk = rank;
-	                byte [] value = r.getValue(Bytes.toBytes("v"), Bytes.toBytes(rk.toString()));
+	                g.addColumn(Bytes.toBytes("v"), Bytes.toBytes(rk.toString()));
+		}
+                Result r = table.get(g);
+		for (int rank = m; rank <= n; rank++)
+		{
+			Integer rk = rank;
+	                byte[] value = r.getValue(Bytes.toBytes("v"), Bytes.toBytes(rk.toString()));
 			if (value == null)
 				break;
-	                String valueStr = Bytes.toString(value);
-        	        out.println(valueStr);
+			String valueStr = Bytes.toString(value);
+			out.println(valueStr);
 		}
 	}
 	catch (Exception e)
