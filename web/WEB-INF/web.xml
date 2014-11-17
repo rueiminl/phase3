@@ -48,5 +48,24 @@
         <servlet-name>q4</servlet-name>
         <url-pattern>/q4</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>q5</servlet-name>
+        <servlet-class>mypackage.q5</servlet-class>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>q5</servlet-name>
+        <url-pattern>/q5</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>q6</servlet-name>
+        <servlet-class>mypackage.q6</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>q6</servlet-name>
+        <url-pattern>/q6</url-pattern>
+    </servlet-mapping>
 </web-app>
