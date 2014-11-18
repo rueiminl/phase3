@@ -36,8 +36,7 @@ public class q5 extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Set response content type
-        response.setContentType("text/plain; charset=UTF-8");
-	response.setCharacterEncoding("UTF-8");
+        response.setContentType("text/plain");
         // Actual logic goes here.
         PrintWriter out = response.getWriter();
         out.println("Wolken,5534-0848-5100,0299-6830-9164");
@@ -54,12 +53,12 @@ public class q5 extends HttpServlet {
 		KeyValue[] values2 = r2.raw();
 		for (int i = 0; i < 4; i++)
 		{
-			byte[] score1 = values1[i].getValue();
-			byte[] score2 = values2[i].getValue();
-			int iScore1 = Integer.valueOf(Bytes.toString(score1));
-			int iScore2 = Integer.valueOf(Bytes.toString(score2));
+			String score1 = Bytes.toString(values1[i].getValue());
+			String score2 = Bytes.toString(values2[i].getValue());
+			int iScore1 = Integer.parseInt(score1);
+			int iScore2 = Integer.parseInt(score2);
 			String winner = (iScore1 > iScore2)?useridA:((iScore1 < iScore2)?useridB:"X");
-			out.println(Bytes.toString(score1) + "\t" + Bytes.toString(score2) + "\t" + winner);
+			out.println(score1 + "\t" + score2 + "\t" + winner);
 		}
 	}
 	catch (Exception e)
