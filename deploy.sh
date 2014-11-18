@@ -11,6 +11,7 @@ tar zxvf s3cmd-1.5.0-rc1.tar.gz
 cd s3cmd-1.5.0-rc1
 sudo python setup.py install
 sudo s3cmd get s3://raylin/q6.txt /usr/share/tomcat7/webapps/ROOT
+cd ..
 
 export CLASSPATH=/usr/share/tomcat7/lib/*:`hbase classpath`
 javac src/q?.java -d web/WEB-INF/classes
