@@ -4,10 +4,8 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.math.*;
 import java.util.*;
-import java.sql.*;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-import java.io.IOException;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.Get;
@@ -17,34 +15,21 @@ import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.hadoop.hbase.KeyValue;
 // Extend HttpServlet class
 public class q2 extends HttpServlet {
-    private DataSource dataSource;
+    Configuration config;
+    HTable table;
     public void init() throws ServletException 
     {
-            PoolProperties p = new PoolProperties();
-            p.setUrl("jdbc:mysql://localhost:3306/db15619?autoReconnect=true&characterEncoding=UTF-8");
-            p.setUsername("root");
-            p.setPassword("wolken");
-            p.setDriverClassName("com.mysql.jdbc.Driver");
-            p.setJmxEnabled(true);
-            p.setTestWhileIdle(false);
-            p.setTestOnBorrow(true);
-            p.setValidationQuery("SELECT 1");
-            p.setTestOnReturn(false);
-            p.setValidationInterval(30000);
-            p.setTimeBetweenEvictionRunsMillis(30000);
-            p.setMaxActive(100);
-            p.setInitialSize(10);
-            p.setMaxWait(10000);
-            p.setRemoveAbandonedTimeout(60);
-            p.setMinEvictableIdleTimeMillis(30000);
-            p.setMinIdle(10);
-            p.setLogAbandoned(true);
-            p.setRemoveAbandoned(true);
-            p.setJdbcInterceptors("org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
-            dataSource = new DataSource();
-            dataSource.setPoolProperties(p); 
+        try
+        {
+                config = HBaseConfiguration.create();
+                table = new HTable(config, "q2");
+        }
+        catch (Exception e)
+        {
+        }
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -57,26 +42,16 @@ public class q2 extends HttpServlet {
         out.println("Wolken,5534-0848-5100,0299-6830-9164");
 	try 
 	{
-		Configuration config = HBaseConfiguration.create();
-		HTable table = new HTable(config, "q3");
-		Get g = new Get(Bytes.toBytes("12"));
+		
+        	String row = request.getParameter("userid") + "_" + request.getParameter("tweet_time");
+	        Get g = new Get(Bytes.toBytes(row));
+		g.setMaxVersions();
 		Result r = table.get(g);
-		byte [] value = r.getValue(Bytes.toBytes("v"),
-			Bytes.toBytes(""));
-		String valueStr = Bytes.toString(value);
-
-
-		Connection conn = dataSource.getConnection();
-		String query = "select concat(tid, \":\", s, \":\", msg) as reply from q2 where uid=" + request.getParameter("userid") + " and ts='" + request.getParameter("tweet_time") + "' order by tid;";
-		Statement st = conn.createStatement();
-		ResultSet rs = st.executeQuery(query);
-		while (rs.next())
+		KeyValue[] values = r.raw();
+		for (KeyValue value : values)
 		{
-			out.println(rs.getString("reply"));
+			out.println(Bytes.toString(value.getValue()));
 		}
-		rs.close();
-		st.close();
-		conn.close();
 	}
 	catch (Exception e)
 	{
@@ -85,5 +60,6 @@ public class q2 extends HttpServlet {
     }
 
     public void destroy() {
+        // do nothing.
     }
 }
