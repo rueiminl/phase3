@@ -21,12 +21,18 @@ import org.apache.hadoop.hbase.KeyValue;
 public class q5 extends HttpServlet {
     Configuration config;
     HTable table;
+    HashMap<String, Integer[]> data;
     public void init() throws ServletException 
     {
         try
         {
-                config = HBaseConfiguration.create();
-                table = new HTable(config, "q5");
+		data = new HashMap<String, Integer[]>();
+		BufferedReader r = new BufferedReader(new FileReader(getServletContext().getRealPath("q5.txt")));
+		String line;
+		while ((line = r.readLine()) != null) {
+			String[] nums = line.split("\t");
+			data.put(nums[0], new Integer[]{Integer.parseInt(nums[1]),Integer.parseInt(nums[2]),Integer.parseInt(nums[3])});
+		}
         }
         catch (Exception e)
         {
@@ -39,37 +45,33 @@ public class q5 extends HttpServlet {
         response.setContentType("text/plain");
         // Actual logic goes here.
         PrintWriter out = response.getWriter();
-	StringBuilder result = new StringBuilder(256);
-	result.append("Wolken,5534-0848-5100,0299-6830-9164\n");
+        out.println("Wolken,5534-0848-5100,0299-6830-9164");
 	try 
 	{
-        	String useridA = request.getParameter("m");
-		String useridB = request.getParameter("n");
-		result.append(useridA);
+		String m = request.getParameter("m");
+		String n = request.getParameter("n");
+		
+		StringBuilder result = new StringBuilder(256);//10+1+10+1+6+1 + 4+1+4+1+10+1 + 6+1+6+1+10+1 + 7+1+7+1+10+1 + 7+1+7+1+10+1
+		result.append(m);
 		result.append("\t");
-		result.append(useridB);
+		result.append(n);
 		result.append("\tWINNER\n");
-		List<Get> gs = new ArrayList<Get>();
-	        gs.add(new Get(Bytes.toBytes(useridA)));
-                gs.add(new Get(Bytes.toBytes(useridB)));
-		Result[] results = table.get(gs);
-		KeyValue[] values1 = results[0].raw();
-		KeyValue[] values2 = results[1].raw();
+		Integer[] scoreM = data.get(Long.parseLong(m));
+		Integer[] scoreN = data.get(Long.parseLong(n));
 		for (int i = 0; i < 4; i++)
 		{
-			String score1 = Bytes.toString(values1[i].getValue());
-			String score2 = Bytes.toString(values2[i].getValue());
-			int iScore1 = Integer.parseInt(score1);
-			int iScore2 = Integer.parseInt(score2);
-			String winner = (iScore1 > iScore2)?useridA:((iScore1 < iScore2)?useridB:"X");
-			result.append(score1);
+			result.append(scoreM[i]);
 			result.append("\t");
-			result.append(score2);
-			result.append("\t");
-			result.append(winner);
+			result.append(scoreN[i]);
+			if (scoreM[i] > scoreN[i])
+				result.append(m);
+			else if (scoreM[i] < scoreN[i])
+				result.append(n);
+			else
+				result.append("X");
 			result.append("\n");
 		}
-		out.print(result);
+		out.println(result);
 	}
 	catch (Exception e)
 	{
