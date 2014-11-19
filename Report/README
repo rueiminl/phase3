@@ -1,0 +1,24 @@
+frontend
+	// note: must execute "sudo yum install tomcat7" first
+	/src: web service java source code
+		q1.java
+		q2.java
+		...
+		q6.java
+	/WEB-INF: Tomcat configuration
+		web.xml
+ETL
+	// note: must create the table first; 
+	// eg. hbase shell> create 'q2', 'v'
+	// note: must deploy AFINN.txt and banned.txt (decrypted), and json-simple-1.1.1.jar in the right place
+	// in our case, put all *.java, *.sh, *.txt, *.jar in the same directory
+	/Q2
+		Q2BulkImport.java
+		Q2BulkImport.sh
+	/Q3
+		//note: output.txt is done in phase 2. Please refer our Q3Mapper.java, Q3Reducer.java, and q3.cpp in report 2
+		Q3BulkImport.java
+		Q3BulkImport.sh
+	/Q4
+		
+			
