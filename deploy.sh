@@ -10,6 +10,7 @@ tar zxvf s3cmd-1.5.0-rc1.tar.gz
 cd s3cmd-1.5.0-rc1
 sudo python setup.py install
 s3cmd --configure
+sudo cp /home/hadoop/.s3cfg /root/.s3cfg
 sudo s3cmd get s3://raylin/q6.txt /usr/share/tomcat7/webapps/ROOT
 cd ..
 
