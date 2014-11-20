@@ -25,6 +25,9 @@ public class q2 extends HttpServlet {
         try
         {
                 config = HBaseConfiguration.create();
+                config.set("hbase.zookeeper.quorum", "172.31.46.34");
+                config.set("hbase.zookeeper.property.clientPort","2181");
+                config.set("hbase.master", "172.31.46.34:60000");
                 table = new HTable(config, "q2");
         }
         catch (Exception e)
