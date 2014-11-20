@@ -1,0 +1,6 @@
+#!/bin/bash
+export CLASSPATH=/usr/share/tomcat7/lib/*:`/home/ubuntu/hbase-0.98.8-hadoop2/bin/hbase classpath`
+javac src/q3.java -d web/WEB-INF/classes
+
+sudo cp web/WEB-INF/classes/mypackage/q3.class /var/lib/tomcat7/webapps/ROOT/WEB-INF/classes/mypackage/q3.class
+sudo cp web/WEB-INF/web.xml /var/lib/tomcat7/webapps/ROOT/WEB-INF/web.xml
