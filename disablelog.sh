@@ -1,1 +1,1 @@
-cp other/logging.properties /etc/tomcat7/logging.properties
+sudo cp other/logging.properties /etc/tomcat7/logging.properties
