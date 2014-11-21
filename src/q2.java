@@ -18,6 +18,8 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.KeyValue;
 // Extend HttpServlet class
 public class q2 extends HttpServlet {
+    final String master = "172.31.42.82";
+    final boolean useLocal = true;
     Configuration config;
     HTable table;
     public void init() throws ServletException 
@@ -25,9 +27,13 @@ public class q2 extends HttpServlet {
         try
         {
                 config = HBaseConfiguration.create();
-                config.set("hbase.zookeeper.quorum", "172.31.46.34");
-                config.set("hbase.zookeeper.property.clientPort","2181");
-                config.set("hbase.master", "172.31.46.34:60000");
+		if (!useLocal)
+		{
+			config.clear();
+        	        config.set("hbase.zookeeper.quorum", master);
+                	config.set("hbase.zookeeper.property.clientPort","2181");
+	                config.set("hbase.master", master + ":60000");
+		}
                 table = new HTable(config, "q2");
         }
         catch (Exception e)

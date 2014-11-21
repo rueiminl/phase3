@@ -19,15 +19,20 @@ import org.apache.hadoop.hbase.util.Bytes;
 public class q3 extends HttpServlet {
     Configuration config;
     HTable table;
+    final String master = "172.31.42.82";
+    final boolean useLocal = true;
     public void init() throws ServletException
     {
 	try
 	{
 		config = HBaseConfiguration.create();
-		config.clear();
-		config.set("hbase.zookeeper.quorum", "172.31.46.34");
-		config.set("hbase.zookeeper.property.clientPort","2181");
-		config.set("hbase.master", "172.31.46.34:60000");
+                if (!useLocal)
+                {
+                        config.clear();
+                        config.set("hbase.zookeeper.quorum", master);
+                        config.set("hbase.zookeeper.property.clientPort","2181");
+                        config.set("hbase.master", master + ":60000");
+                }
 		table = new HTable(config, "q3");
 	}
 	catch (Exception e)
