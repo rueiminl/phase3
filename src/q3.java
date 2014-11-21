@@ -19,8 +19,8 @@ import org.apache.hadoop.hbase.util.Bytes;
 public class q3 extends HttpServlet {
     Configuration config;
     HTable table;
-    final String master = "172.31.42.82";
-    final boolean useLocal = true;
+    final String master = "172.31.45.148";
+    final boolean useLocal = false;
     public void init() throws ServletException
     {
 	try

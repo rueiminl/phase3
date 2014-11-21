@@ -19,8 +19,8 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.KeyValue;
 // Extend HttpServlet class
 public class q5 extends HttpServlet {
-    final String master = "172.31.42.82";
-    final boolean useLocal = true;
+    final String master = "172.31.45.148";
+    final boolean useLocal = false;
     Configuration config;
     HTable table;
     public void init() throws ServletException 
